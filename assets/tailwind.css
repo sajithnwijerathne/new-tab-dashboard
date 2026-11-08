@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+body {
+  @apply bg-slate-950 text-slate-100 antialiased;
+}
+
+.card {
+  @apply rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-md;
+}
