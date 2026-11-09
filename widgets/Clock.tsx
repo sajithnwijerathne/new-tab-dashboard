@@ -7,7 +7,7 @@ function greeting(h: number) {
   return 'Good evening';
 }
 
-export function Clock({ hour12 }: { hour12: boolean }) {
+export function Clock({ hour12, name }: { hour12: boolean; name?: string }) {
   const [now, setNow] = useState(new Date());
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
@@ -16,7 +16,10 @@ export function Clock({ hour12 }: { hour12: boolean }) {
 
   return (
     <div className="text-center">
-      <p className="text-lg text-slate-400">{greeting(now.getHours())}</p>
+      <p className="text-lg text-slate-400">
+        {greeting(now.getHours())}
+        {name?.trim() ? `, ${name.trim()}` : ''}
+      </p>
       <h1 className="text-8xl font-light tabular-nums tracking-tight">
         {now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12 })}
       </h1>

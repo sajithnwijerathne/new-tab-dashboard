@@ -7,12 +7,20 @@ export default function App() {
   const [settings, setSettings] = useStorageItem(settingsItem);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Location[]>([]);
+  const [name, setName] = useState<string | null>(null); // null = not edited yet, show saved value
 
   // Debounced city search
   useEffect(() => {
     const id = setTimeout(() => searchCities(query).then(setResults), 300);
     return () => clearTimeout(id);
   }, [query]);
+
+  // Save the name shortly after typing stops: storage.sync allows only ~120 writes a minute.
+  useEffect(() => {
+    if (name === null) return;
+    const id = setTimeout(() => settingsItem.getValue().then((s) => settingsItem.setValue({ ...s, name: name.trim() })), 400);
+    return () => clearTimeout(id);
+  }, [name]);
 
   const pick = (location: Location) => {
     setSettings({ ...settings, location });
@@ -24,6 +32,18 @@ export default function App() {
   return (
     <main className="mx-auto max-w-xl space-y-6 px-6 py-12">
       <h1 className="text-2xl font-semibold">Settings</h1>
+
+      <section className="card space-y-3">
+        <h2 className="font-medium">Your name</h2>
+        <p className="text-sm text-slate-400">Used in the greeting on your new tab, e.g. “Good morning, Sajith”.</p>
+        <input
+          className="w-full rounded-lg border border-white/10 bg-black/20 px-3 py-2 text-sm outline-none focus:border-sky-500"
+          placeholder="Your name (optional)"
+          maxLength={40}
+          value={name ?? settings.name ?? ''}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </section>
 
       <section className="card space-y-3">
         <h2 className="font-medium">Location</h2>

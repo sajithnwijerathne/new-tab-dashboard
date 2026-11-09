@@ -20,7 +20,7 @@ export default function App() {
       </button>
 
       <div className="mx-auto flex max-w-5xl flex-col gap-12">
-        <Clock hour12={settings.hour12} />
+        <Clock hour12={settings.hour12} name={settings.name} />
         <div className="grid gap-6 md:grid-cols-2">
           <Weather />
           <Todos />

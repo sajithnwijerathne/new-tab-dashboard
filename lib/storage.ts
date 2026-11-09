@@ -12,6 +12,8 @@ export interface Location {
 }
 
 export interface Settings {
+  /** Shown in the greeting. Optional: settings saved before this existed won't have it. */
+  name?: string;
   location: Location | null;
   units: Units;
   hour12: boolean;
@@ -93,7 +95,7 @@ export interface WeatherData extends WeatherForecast {
 
 // Settings sync across the user's devices; data caches stay local.
 export const settingsItem = storage.defineItem<Settings>('sync:settings', {
-  fallback: { location: null, units: 'metric', hour12: false },
+  fallback: { name: '', location: null, units: 'metric', hour12: false },
 });
 
 export const todosItem = storage.defineItem<Todo[]>('sync:todos', { fallback: [] });
