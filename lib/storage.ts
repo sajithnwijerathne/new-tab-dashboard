@@ -7,6 +7,8 @@ export interface Location {
   country?: string;
   latitude: number;
   longitude: number;
+  /** IANA time zone, e.g. "Europe/Stockholm". Older saved locations may not have it. */
+  timezone?: string;
 }
 
 export interface Settings {
@@ -21,11 +23,72 @@ export interface Todo {
   done: boolean;
 }
 
-export interface WeatherData {
+// ---- Weather ---------------------------------------------------------------
+// All values are stored in metric (°C, m/s, mm, hPa) and converted when displayed,
+// so switching units never needs a refetch.
+
+export type ConditionKind =
+  | 'clear'
+  | 'partly-cloudy'
+  | 'cloudy'
+  | 'fog'
+  | 'drizzle'
+  | 'rain'
+  | 'showers'
+  | 'sleet'
+  | 'snow'
+  | 'thunder';
+
+export interface Condition {
+  kind: ConditionKind;
+  label: string;
+}
+
+export type WeatherSource = 'smhi' | 'open-meteo';
+
+export interface CurrentWeather {
+  time: number;
+  temp: number;
+  feelsLike: number;
+  condition: Condition;
+  isDay: boolean;
+  windSpeed: number;
+  windGust?: number;
+  windDir: number;
+  humidity: number;
+  pressure: number;
+  precipProb: number;
+}
+
+export interface HourlyWeather {
+  time: number;
+  temp: number;
+  condition: Condition;
+  isDay: boolean;
+  precipProb: number;
+}
+
+export interface DailyWeather {
+  /** Local date at the location, YYYY-MM-DD */
+  date: string;
+  min: number;
+  max: number;
+  condition: Condition;
+  precipProb: number;
+  precipSum: number;
+}
+
+/** What a weather provider returns. */
+export interface WeatherForecast {
+  source: WeatherSource;
+  current: CurrentWeather;
+  hourly: HourlyWeather[];
+  daily: DailyWeather[];
+}
+
+export interface WeatherData extends WeatherForecast {
   fetchedAt: number;
   locationKey: string;
-  current: { temp: number; feelsLike: number; code: number; wind: number; isDay: boolean };
-  daily: { date: string; max: number; min: number; code: number; precipProb: number }[];
 }
 
 // Settings sync across the user's devices; data caches stay local.
@@ -35,6 +98,7 @@ export const settingsItem = storage.defineItem<Settings>('sync:settings', {
 
 export const todosItem = storage.defineItem<Todo[]>('sync:todos', { fallback: [] });
 
-export const weatherCacheItem = storage.defineItem<WeatherData | null>('local:weatherCache', {
+// New key: the old Open-Meteo-only cache ("weatherCache") has a different shape.
+export const weatherCacheItem = storage.defineItem<WeatherData | null>('local:weather', {
   fallback: null,
 });

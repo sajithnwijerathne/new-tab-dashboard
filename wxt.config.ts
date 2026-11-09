@@ -12,6 +12,7 @@ export default defineConfig({
     description: 'A calm new tab dashboard with weather, clock and your to-dos.',
     permissions: ['storage', 'alarms'],
     host_permissions: [
+      'https://opendata-download-metfcst.smhi.se/*',
       'https://api.open-meteo.com/*',
       'https://geocoding-api.open-meteo.com/*',
     ],

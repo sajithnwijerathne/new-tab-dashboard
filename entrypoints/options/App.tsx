@@ -74,8 +74,11 @@ export default function App() {
       </section>
 
       <p className="text-xs text-slate-500">
-        Weather data by <a className="underline" href="https://open-meteo.com/" target="_blank">Open-Meteo.com</a>. All your
-        data stays in your browser.
+        Weather data from{' '}
+        <a className="underline" href="https://www.smhi.se/" target="_blank" rel="noreferrer">SMHI</a> (CC BY 4.0) in the
+        Nordics, and{' '}
+        <a className="underline" href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo.com</a>{' '}
+        elsewhere. City search by Open-Meteo. All your data stays in your browser.
       </p>
     </main>
   );

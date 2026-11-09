@@ -14,6 +14,6 @@ export default defineBackground(() => {
     if (alarm.name === ALARM) refreshWeather().catch(console.error);
   });
 
-  // Location or units changed → refetch right away.
-  settingsItem.watch(() => refreshWeather(true).catch(console.error));
+  // Settings changed → refetch only if the location changed (units are converted on display).
+  settingsItem.watch(() => refreshWeather().catch(console.error));
 });

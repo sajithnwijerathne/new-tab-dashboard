@@ -19,5 +19,5 @@ To load manually: `chrome://extensions` → Developer mode → Load unpacked →
 - `entrypoints/options` – settings (location, units, clock format)
 - `entrypoints/background.ts` – refreshes weather every 30 min via `chrome.alarms`
 - `widgets/` – Clock, Weather, Todos
-- `services/weather.ts` – Open-Meteo forecast + geocoding
+- `services/weather/` – SMHI forecast (SNOW1g) with Open-Meteo fallback outside SMHI's area, plus city search
 - `lib/storage.ts` – typed storage (settings/todos in `sync`, caches in `local`)
